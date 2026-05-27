@@ -1,0 +1,6 @@
+@SaasContentLibrary.Api_HostAddress = http://localhost:5036
+
+GET {{SaasContentLibrary.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
