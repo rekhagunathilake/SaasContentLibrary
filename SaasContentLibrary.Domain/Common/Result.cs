@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SaasContentLibrary.Domain.Common
+﻿namespace SaasContentLibrary.Domain.Common
 {
     public class Result
     {
