@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path="docker-compose.yml" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="SaasContentLibrary.Api/SaasContentLibrary.Api.csproj" Id="02a9f7c5-2a05-4735-b6e1-c190ca4c4bdf" />
   <Project Path="SaasContentLibrary.Application/SaasContentLibrary.Application.csproj" />
