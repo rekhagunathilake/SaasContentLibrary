@@ -1,4 +1,4 @@
-# saas-content-library-api
+# SaaS Content Library API
 
 A B2B SaaS content library API for asset-management platforms — versioned 
 content blocks with a compliance-driven approval workflow, in .NET 10.
