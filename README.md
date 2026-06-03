@@ -154,7 +154,7 @@ flowchart TD
 ## Getting started
 
 ```bash
-docker compose up -d postgres
+docker compose up -d
 dotnet tool restore
 dotnet ef database update --project SaasContentLibrary.Infrastructure --startup-project SaasContentLibrary.Api
 dotnet run --project SaasContentLibrary.Api
