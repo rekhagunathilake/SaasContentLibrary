@@ -30,7 +30,7 @@
             => _value = value;
 
         public T Value => IsSuccess
-            ? Value
+            ? _value
             : throw new InvalidOperationException("Cannot access the value of a failed result.");
     }
 }
