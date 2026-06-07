@@ -1,8 +1,7 @@
-using MediatR;
-using Scalar.AspNetCore;
+using SaasContentLibrary.Api;
 using SaasContentLibrary.Application;
 using SaasContentLibrary.Infrastructure;
-using SaasContentLibrary.Api.Common;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,20 +22,17 @@ if (app.Environment.IsDevelopment())
 }
 
 var contents = app.MapGroup("/content-blocks")
-    .WithName("CreateContentBlock")
-    .ProducesProblem(StatusCodes.Status400BadRequest)
-    .ProducesProblem(StatusCodes.Status409Conflict);
+    .WithTags("ContentBlock");
 
-contents.MapPost("/", async 
-    (CreateContentBlockRequest request,
-    ISender sender,
-    CancellationToken cancellationToken) =>
-{
-    var result = await sender.Send(request.ToCommand(), cancellationToken);
-    return result.IsSuccess 
-    ? (IResult)TypedResults.Created($"/v1/content-blocks/{result.Value}", result.Value) 
-    : result.Error.ToProblemDetails();
-});
+contents.MapPost("/", ContentBlockEndpoints.CreateContentBlock).WithName("CreateContentBlock");
+
+contents.MapPost("/{id:guid}/version", ContentBlockEndpoints.AddDraftVersion).WithName("AddDraftVersion");
+
+contents.MapPost("/{id:guid}/version/{versionId:guid}/submit", ContentBlockEndpoints.SubmitForReview).WithName("SubmitForReview");
+
+contents.MapPost("/{id:guid}/version/{versionId:guid}/approve", ContentBlockEndpoints.ApproveVersion).WithName("ApproveVersion");
+
+contents.MapPost("/{id:guid}/version/{versionId:guid}/archive", ContentBlockEndpoints.Archive).WithName("Archive");
 
 app.UseHttpsRedirection();
 
