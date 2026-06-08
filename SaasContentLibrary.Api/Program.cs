@@ -34,6 +34,13 @@ contents.MapPost("/{id:guid}/version/{versionId:guid}/approve", ContentBlockEndp
 
 contents.MapPost("/{id:guid}/version/{versionId:guid}/archive", ContentBlockEndpoints.Archive).WithName("Archive");
 
+
+contents.MapGet("/", ContentBlockEndpoints.ListContentBlocks).WithName("ListContentBlocks");
+
+contents.MapGet("/{id:guid}", ContentBlockEndpoints.GetContentBlock).WithName("GetContentBlock");
+
+contents.MapGet("/{id:guid}/versions", ContentBlockEndpoints.GetVersionHistory).WithName("GetVersionHistory");
+
 app.UseHttpsRedirection();
 
 app.Run();
