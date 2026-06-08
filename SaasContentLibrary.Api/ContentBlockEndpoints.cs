@@ -5,6 +5,10 @@ using SaasContentLibrary.Api.RequestDTOs;
 using SaasContentLibrary.Application.ContentBlocks.Commands.ApproveVersion;
 using SaasContentLibrary.Application.ContentBlocks.Commands.Archive;
 using SaasContentLibrary.Application.ContentBlocks.Commands.SubmitForReview;
+using SaasContentLibrary.Application.ContentBlocks.Queries;
+using SaasContentLibrary.Application.ContentBlocks.Queries.GetContentBlock;
+using SaasContentLibrary.Application.ContentBlocks.Queries.GetVersionHistory;
+using SaasContentLibrary.Application.ContentBlocks.Queries.ListBlocksByType;
 
 namespace SaasContentLibrary.Api;
 
@@ -68,4 +72,37 @@ public static class ContentBlockEndpoints
             ? TypedResults.NoContent()
             : result.Error.ToProblemDetails();
     }
+
+    public static async Task<Results<Ok<ContentBlockResponse>, ProblemHttpResult>> GetContentBlock(
+        Guid id,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new GetContentBlockQuery(id), cancellationToken);
+
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : result.Error.ToProblemDetails();
+    }
+
+    public static async Task<Ok<IReadOnlyList<ContentBlockSummary>>> ListContentBlocks(
+        [AsParameters] ListContentBlocksRequest filter,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new ListBlocksByTypeQuery(filter.TenantId, filter.BlockType), cancellationToken);
+
+        return TypedResults.Ok(result.Value);
+    }
+
+    public static async Task<Results<Ok<IReadOnlyList<ContentVersionResponse>>, ProblemHttpResult>> GetVersionHistory(
+        Guid id,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new GetVersionHistoryQuery(id), cancellationToken);
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : result.Error.ToProblemDetails();
+    }>>
 }
