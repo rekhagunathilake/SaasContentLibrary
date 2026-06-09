@@ -1,6 +1,59 @@
-@SaasContentLibrary.Api_HostAddress = http://localhost:5036
+# Example API requests against a local instance.
+# Workflow: create → add draft → submit → approve → archive.
+# Paste IDs from each response into the variables below.
 
-GET {{SaasContentLibrary.Api_HostAddress}}/weatherforecast/
+@host = http://localhost:5036
+@blockId = d784ede2-0915-4774-bd97-e66078a308a2
+@versionId = d784ede2-0915-4774-bd97-e66078a308a2
+
+### Create a content block (returns the new ID)
+POST {{host}}/v1/content-blocks
+Content-Type: application/json
+
+{
+  "tenantId": "CEC674B3-B9CF-4A69-AC0B-A22F15777F88",
+  "blockType": "Disclaimer",
+  "localeCode": "en-US",
+  "name": "Standard MIFID II disclaimer",
+  "body": "This communication is intended for professional clients only.",
+  "authoredBy": "rekha@test.com"
+}
+
+### Add a new draft version
+POST {{host}}/v1/content-blocks/{{blockId}}/versions
+Content-Type: application/json
+
+{
+  "body": "Updated disclaimer text for Q2 2026.",
+  "authoredBy": "rekha@test.com"
+}
+
+### Submit for review
+POST {{host}}/v1/content-blocks/{{blockId}}/versions/{{versionId}}/submit
+
+### Approve
+POST {{host}}/v1/content-blocks/{{blockId}}/versions/{{versionId}}/approve
+Content-Type: application/json
+
+{
+  "approvedBy": "rekha@test.com"
+}
+
+### Archive
+POST {{host}}/v1/content-blocks/{{blockId}}/archive
+
+### List all blocks for a tenant
+GET {{host}}/v1/content-blocks?tenantId=00000000-0000-0000-0000-000000000001
 Accept: application/json
 
-###
+### List only Disclaimer blocks for a tenant
+GET {{host}}/v1/content-blocks?tenantId=00000000-0000-0000-0000-000000000001&blockType=Disclaimer
+Accept: application/json
+
+### Get a specific block by id
+GET {{host}}/v1/content-blocks/{{blockId}}
+Accept: application/json
+
+### Get version history of a block
+GET {{host}}/v1/content-blocks/{{blockId}}/versions
+Accept: application/json
