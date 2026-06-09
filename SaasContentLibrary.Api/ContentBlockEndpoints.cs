@@ -104,5 +104,5 @@ public static class ContentBlockEndpoints
         return result.IsSuccess
             ? TypedResults.Ok(result.Value)
             : result.Error.ToProblemDetails();
-    }>>
+    }
 }
