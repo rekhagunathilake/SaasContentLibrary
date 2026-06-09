@@ -3,8 +3,20 @@
 # Paste IDs from each response into the variables below.
 
 @host = http://localhost:5036
-@blockId = d784ede2-0915-4774-bd97-e66078a308a2
-@versionId = d784ede2-0915-4774-bd97-e66078a308a2
+@blockId = 91f0904b-db77-4ed7-a1b8-0aca8f34c847
+@versionId = 297a79e8-c927-4684-8f73-02921a251782
+
+POST {{host}}/v1/content-blocks
+Content-Type: application/json
+
+{
+  "tenantId": "00000000-0000-0000-0000-000000000001",
+  "blockType": 1,
+  "localeCode": "",
+  "name": "",
+  "body": "",
+  "authoredBy": ""
+}
 
 ### Create a content block (returns the new ID)
 POST {{host}}/v1/content-blocks
@@ -12,7 +24,7 @@ Content-Type: application/json
 
 {
   "tenantId": "CEC674B3-B9CF-4A69-AC0B-A22F15777F88",
-  "blockType": "Disclaimer",
+  "blockType": 1,
   "localeCode": "en-US",
   "name": "Standard MIFID II disclaimer",
   "body": "This communication is intended for professional clients only.",
@@ -20,19 +32,19 @@ Content-Type: application/json
 }
 
 ### Add a new draft version
-POST {{host}}/v1/content-blocks/{{blockId}}/versions
+POST {{host}}/v1/content-blocks/{{blockId}}/version
 Content-Type: application/json
 
 {
-  "body": "Updated disclaimer text for Q2 2026.",
+  "contentBody": "Updated disclaimer text for Q2 2026.",
   "authoredBy": "rekha@test.com"
 }
 
 ### Submit for review
-POST {{host}}/v1/content-blocks/{{blockId}}/versions/{{versionId}}/submit
+POST {{host}}/v1/content-blocks/{{blockId}}/version/{{versionId}}/submit
 
 ### Approve
-POST {{host}}/v1/content-blocks/{{blockId}}/versions/{{versionId}}/approve
+POST {{host}}/v1/content-blocks/{{blockId}}/version/{{versionId}}/approve
 Content-Type: application/json
 
 {
@@ -43,11 +55,11 @@ Content-Type: application/json
 POST {{host}}/v1/content-blocks/{{blockId}}/archive
 
 ### List all blocks for a tenant
-GET {{host}}/v1/content-blocks?tenantId=00000000-0000-0000-0000-000000000001
+GET {{host}}/v1/content-blocks?tenantId=CEC674B3-B9CF-4A69-AC0B-A22F15777F88
 Accept: application/json
 
 ### List only Disclaimer blocks for a tenant
-GET {{host}}/v1/content-blocks?tenantId=00000000-0000-0000-0000-000000000001&blockType=Disclaimer
+GET {{host}}/v1/content-blocks?tenantId=CEC674B3-B9CF-4A69-AC0B-A22F15777F88&blockType=Disclaimer
 Accept: application/json
 
 ### Get a specific block by id

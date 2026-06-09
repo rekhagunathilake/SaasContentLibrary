@@ -1,18 +1,24 @@
 using SaasContentLibrary.Api;
+using SaasContentLibrary.Api.Common;
 using SaasContentLibrary.Application;
 using SaasContentLibrary.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddProblemDetails(); // enables IProblemDetailsService for global exception handling
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -21,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-var contents = app.MapGroup("/content-blocks")
+var contents = app.MapGroup("/v1/content-blocks")
     .WithTags("ContentBlock");
 
 contents.MapPost("/", ContentBlockEndpoints.CreateContentBlock).WithName("CreateContentBlock");
