@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
+using ValidationException = SaasContentLibrary.Application.Common.Exceptions.ValidationException;
+
 namespace SaasContentLibrary.Application.Common.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse>(
