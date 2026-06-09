@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SaasContentLibrary.Application.Common.Interfaces;
+using SaasContentLibrary.Application.ContentBlocks.Queries;
 using SaasContentLibrary.Infrastructure.Persistence;
+using SaasContentLibrary.Infrastructure.Persistence.Queries;
 using SaasContentLibrary.Infrastructure.Persistence.Repositories;
 
 namespace SaasContentLibrary.Infrastructure;
@@ -20,6 +22,8 @@ public static class DependencyInjection
 
         services.AddScoped<IContentBlockRepository, ContentBlockRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IContentBlockQueries, ContentBlockQueries>();
 
         return services;
     }
