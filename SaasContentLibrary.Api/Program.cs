@@ -16,6 +16,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddProblemDetails(); // enables IProblemDetailsService for global exception handling
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.UseExceptionHandler();
@@ -46,6 +48,8 @@ contents.MapGet("/", ContentBlockEndpoints.ListContentBlocks).WithName("ListCont
 contents.MapGet("/{id:guid}", ContentBlockEndpoints.GetContentBlock).WithName("GetContentBlock");
 
 contents.MapGet("/{id:guid}/versions", ContentBlockEndpoints.GetVersionHistory).WithName("GetVersionHistory");
+
+app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
 
