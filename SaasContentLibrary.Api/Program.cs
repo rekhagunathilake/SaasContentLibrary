@@ -45,23 +45,31 @@ builder.Services.AddOpenTelemetry()
     })
     .AddHttpClientInstrumentation()
     .AddNpgsql()
-    .AddOtlpExporter()
+    .AddOtlpExporter(options => 
+    {
+        options.Endpoint = new Uri("http://127.0.0.1:4318");
+        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
+    })
     .AddConsoleExporter())
 .WithMetrics(metrics => metrics
     .AddAspNetCoreInstrumentation()
     .AddHttpClientInstrumentation()
     .AddRuntimeInstrumentation()
-    .AddOtlpExporter()
+    .AddOtlpExporter(options =>
+    {
+        options.Endpoint = new Uri("http://127.0.0.1:4318");
+        options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
+    })
     .AddConsoleExporter());
 
-builder.Logging.AddOpenTelemetry(options =>
-{
-    options.IncludeScopes = true;
-    options.IncludeFormattedMessage = true;
-    options.ParseStateValues = true;
-    options.AddOtlpExporter();
-    options.AddConsoleExporter();
-});
+//builder.Logging.AddOpenTelemetry(options =>
+//{
+//    options.IncludeScopes = true;
+//    options.IncludeFormattedMessage = true;
+//    options.ParseStateValues = true;
+//    options.AddOtlpExporter();
+//    options.AddConsoleExporter();
+//});
 
 var app = builder.Build();
 
