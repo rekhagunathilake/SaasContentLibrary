@@ -3,7 +3,7 @@
 # Paste IDs from each response into the variables below.
 
 @host = http://localhost:5036
-@blockId = 91f0904b-db77-4ed7-a1b8-0aca8f34c847
+@blockId = 608d05f2-b096-4310-bdf3-95cd313d035b
 @versionId = 297a79e8-c927-4684-8f73-02921a251782
 
 POST {{host}}/v1/content-blocks
@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### Add a new draft version
-POST {{host}}/v1/content-blocks/{{blockId}}/version
+POST {{host}}/v1/content-blocks/{{blockId}}/versions
 Content-Type: application/json
 
 {
@@ -41,10 +41,10 @@ Content-Type: application/json
 }
 
 ### Submit for review
-POST {{host}}/v1/content-blocks/{{blockId}}/version/{{versionId}}/submit
+POST {{host}}/v1/content-blocks/{{blockId}}/versions/{{versionId}}/submit
 
 ### Approve
-POST {{host}}/v1/content-blocks/{{blockId}}/version/{{versionId}}/approve
+POST {{host}}/v1/content-blocks/{{blockId}}/versions/{{versionId}}/approve
 Content-Type: application/json
 
 {
