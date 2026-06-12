@@ -21,7 +21,11 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddProblemDetails(); // enables IProblemDetailsService for global exception handling
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddNpgSql(
+        builder.Configuration.GetConnectionString("ContentLibrary")!,
+        name: "postgres",
+        tags: new[] { "ready", "db" });
 
 const string ServiceName = "saas-content-library-api";
 
@@ -104,6 +108,12 @@ contents.MapGet("/{id:guid}", ContentBlockEndpoints.GetContentBlock).WithName("G
 
 contents.MapGet("/{id:guid}/versions", ContentBlockEndpoints.GetVersionHistory).WithName("GetVersionHistory");
 
-app.MapHealthChecks("/health");
+// Liveness (no db)
+app.MapHealthChecks("/health/live");
+// Readiness (with db)
+app.MapHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
 
 app.Run();
