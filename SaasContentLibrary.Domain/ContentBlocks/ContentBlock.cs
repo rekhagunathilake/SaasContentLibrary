@@ -149,7 +149,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
         public Result Archive(DateTime nowUtc)
         {
             if (Status == BlockStatus.Archived)
-                return Result.Failure(ContentBlockErrors.IsArchived);
+                return Result.Success();
 
             Status = BlockStatus.Archived;
             ArchivedAtUtc = nowUtc;
