@@ -1,6 +1,6 @@
 ﻿namespace SaasContentLibrary.Domain.Common
 {
-    public sealed record Error(string code, string message, ErrorType type)
+    public sealed record Error(string Code, string Message, ErrorType Type)
     {
         public static readonly Error None = new(string.Empty, string.Empty, ErrorType.None);
 
