@@ -15,7 +15,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
         public string Name { get; private set; } = null!;
         public BlockStatus Status { get; private set; }
         public DateTime CreatedAtUtc { get; private set; }
-        public DateTime ArchivedAtUtc { get; private set; }
+        public DateTime? ArchivedAtUtc { get; private set; }
 
         public IReadOnlyCollection<ContentVersion> Versions => _versions.AsReadOnly();
 
@@ -50,7 +50,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
             if (nameValidation.IsFailure)
                 return Result.Failure<ContentBlock>(nameValidation.Error);
 
-            if (string.IsNullOrEmpty(authoredBy))
+            if (string.IsNullOrWhiteSpace(authoredBy))
                 return Result.Failure<ContentBlock>(ContentBlockErrors.AuthorEmpty);
 
             var block = new ContentBlock(
@@ -125,7 +125,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
             if (Status == BlockStatus.Archived)
                 return Result.Failure(ContentBlockErrors.IsArchived);
 
-            if (string.IsNullOrEmpty(approvedBy))
+            if (string.IsNullOrWhiteSpace(approvedBy))
                 return Result.Failure(ContentBlockErrors.ApproverEmpty);
 
             var version = _versions.SingleOrDefault(v => v.Id == versionId);

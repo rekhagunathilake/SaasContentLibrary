@@ -7,16 +7,16 @@ public static class ErrorExtensions
 {
     public static ProblemHttpResult ToProblemDetails(this Error error)
     {
-        var (statusCode, title) = MapStatus(error.code);
+        var (statusCode, title) = MapStatus(error.Code);
 
         return TypedResults.Problem(
             title: title,
-            detail: error.message,
+            detail: error.Message,
             statusCode: statusCode,
-            type: $"https://content-library.local/errors/{error.code}",
+            type: $"https://content-library.local/errors/{error.Code}",
             extensions: new Dictionary<string, object?>
             {
-                ["code"] = error.code
+                ["code"] = error.Code
             });
     }
 
