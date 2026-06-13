@@ -270,7 +270,7 @@ Every aggregate method takes a `nowUtc` parameter, injected via `TimeProvider` i
 - ✅ Infrastructure layer — EF Core 10 + Postgres, repository, unit of work
 - ✅ Api layer — minimal API endpoints, ProblemDetails error handling, OpenTelemetry tracing
 - ✅ Local dev — `docker compose up` starts Postgres + pgAdmin + Jaeger
-- 🔨 Domain unit tests
+- ✅ Domain unit tests
 - 🔨 GitHub Actions CI workflow
 
 ## Known workarounds
