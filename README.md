@@ -1,5 +1,7 @@
 # SaaS Content Library API
 
+![CI](https://github.com/rekhagunathilake/SaasContentLibrary/actions/workflows/ci.yml/badge.svg)
+
 A B2B SaaS content library API for asset-management platforms — versioned 
 content blocks with a compliance-driven approval workflow, in .NET 10.
 
@@ -271,7 +273,7 @@ Every aggregate method takes a `nowUtc` parameter, injected via `TimeProvider` i
 - ✅ Api layer — minimal API endpoints, ProblemDetails error handling, OpenTelemetry tracing
 - ✅ Local dev — `docker compose up` starts Postgres + pgAdmin + Jaeger
 - ✅ Domain unit tests
-- 🔨 GitHub Actions CI workflow
+- ✅ GitHub Actions CI workflow
 
 ## Known workarounds
 
