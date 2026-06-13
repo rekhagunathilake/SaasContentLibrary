@@ -1,6 +1,6 @@
 # SaaS Content Library API
 
-![CI](https://github.com/rekhagunathilake/SaasContentLibrary/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/rekhagunathilake/SaasContentLibrary/actions/workflows/ci.yml/badge.svg)](https://github.com/rekhagunathilake/SaasContentLibrary/actions/workflows/ci.yml)
 
 A B2B SaaS content library API for asset-management platforms — versioned 
 content blocks with a compliance-driven approval workflow, in .NET 10.
