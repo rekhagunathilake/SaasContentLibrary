@@ -63,10 +63,10 @@ namespace SaasContentLibrary.Domain.ContentBlocks
 
             block._versions.Add(firstVersion);
 
-            block.RaiseDomainEvents(new ContentBlockCreatedEvent(
+            block.RaiseDomainEvent(new ContentBlockCreatedEvent(
                 block.Id, tenantId, blockType, nowUtc));
 
-            block.RaiseDomainEvents(new VersionAddedEvent(
+            block.RaiseDomainEvent(new VersionAddedEvent(
                 block.Id, firstVersion.Id, firstVersion.VersionNumber, nowUtc));
 
             return Result.Success(block);
@@ -92,7 +92,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
 
             _versions.Add(newVersion);
 
-            RaiseDomainEvents(new VersionAddedEvent(
+            RaiseDomainEvent(new VersionAddedEvent(
                 Id, newVersion.Id, newVersion.VersionNumber, nowUtc));
 
             return Result.Success(newVersion.Id);
@@ -113,7 +113,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
 
             version.SubmitForReview();
 
-            RaiseDomainEvents(new VersionSubmittedForReviewEvent(Id, versionId, nowUtc));
+            RaiseDomainEvent(new VersionSubmittedForReviewEvent(Id, versionId, nowUtc));
 
             return Result.Success();
         }
@@ -141,7 +141,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
 
             version.Approve(approvedBy.Trim(), nowUtc);
 
-            RaiseDomainEvents(new VersionApprovedEvent(Id, versionId, previouslyApproved?.Id, nowUtc));
+            RaiseDomainEvent(new VersionApprovedEvent(Id, versionId, previouslyApproved?.Id, nowUtc));
 
             return Result.Success();
         }
@@ -154,7 +154,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
             Status = BlockStatus.Archived;
             ArchivedAtUtc = nowUtc;
 
-            RaiseDomainEvents(new ContentBlockArchivedEvent(Id, nowUtc));
+            RaiseDomainEvent(new ContentBlockArchivedEvent(Id, nowUtc));
 
             return Result.Success();
         }

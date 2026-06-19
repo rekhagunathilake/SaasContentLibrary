@@ -25,7 +25,7 @@
 
     public class Result<T> : Result
     {
-        public T _value { get; }
+        private readonly T _value;
         protected internal Result(T value, bool isSuccess, Error error) : base(isSuccess, error)
             => _value = value;
 
