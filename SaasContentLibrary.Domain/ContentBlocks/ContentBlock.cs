@@ -81,7 +81,7 @@ namespace SaasContentLibrary.Domain.ContentBlocks
                 return Result.Failure<ContentVersionId>
                     (ContentBlockErrors.IsArchived);
 
-            if (string.IsNullOrEmpty(authoredBy))
+            if (string.IsNullOrWhiteSpace(authoredBy))
                 return Result.Failure<ContentVersionId>
                     (ContentBlockErrors.AuthorEmpty);
 
