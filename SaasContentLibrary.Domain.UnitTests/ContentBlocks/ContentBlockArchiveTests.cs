@@ -11,7 +11,7 @@ public class ContentBlockArchiveTests
     public void Archive_OnActiveBlock_SetArchivedStatusAndTimeStamp()
     {
         var block = ContentBlockFactory.CreateValid();
-        var archivedTime = ContentBlockFactory.FixedNotUtc.AddDays(30);
+        var archivedTime = ContentBlockFactory.FixedNowUtc.AddDays(30);
 
         var result = block.Archive(archivedTime);
 
@@ -25,11 +25,11 @@ public class ContentBlockArchiveTests
     public void Archive_OnAlreadyArchivedBlock_IsIdempotent()
     {
         var block = ContentBlockFactory.CreateValid();
-        var originalArchivedTime = ContentBlockFactory.FixedNotUtc.AddDays(30);
+        var originalArchivedTime = ContentBlockFactory.FixedNowUtc.AddDays(30);
         block.Archive(originalArchivedTime);
         block.ClearDomainEvents();
 
-        var result = block.Archive(ContentBlockFactory.FixedNotUtc.AddDays(60));
+        var result = block.Archive(ContentBlockFactory.FixedNowUtc.AddDays(60));
         
         result.IsSuccess.Should().BeTrue();
         block.ArchivedAtUtc.Should().Be(originalArchivedTime); // no change

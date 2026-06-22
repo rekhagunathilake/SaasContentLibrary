@@ -5,7 +5,7 @@ namespace SaasContentLibrary.Domain.UnitTests.TestHelpers;
 
 internal static class ContentBlockFactory
 {
-    public static readonly DateTime FixedNotUtc = new(2026, 6, 10, 12, 0, 0, DateTimeKind.Utc);
+    public static readonly DateTime FixedNowUtc = new(2026, 6, 10, 12, 0, 0, DateTimeKind.Utc);
 
     public static ContentBlock CreateValid(
         string name = "Standard Disclaimer I",
@@ -24,7 +24,7 @@ internal static class ContentBlockFactory
             name: name,
             initialBody: bodyResult.Value,
             authoredBy: authoredBy,
-            nowUtc: FixedNotUtc).Value;
+            nowUtc: FixedNowUtc).Value;
     }
 
     public static ContentBody TestBody(string value = "Test content text") => ContentBody.Create(value).Value;
