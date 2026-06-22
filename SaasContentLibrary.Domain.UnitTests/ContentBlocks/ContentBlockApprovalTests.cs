@@ -12,16 +12,16 @@ public class ContentBlockApprovalTests
 	{
 		var block = ContentBlockFactory.CreateValid();
 		var versionId = block.Versions.First().Id;
-		block.SubmitForReview(versionId, ContentBlockFactory.FixedNotUtc.AddHours(1));
+		block.SubmitForReview(versionId, ContentBlockFactory.FixedNowUtc.AddHours(1));
 
 		var result = block.ApproveVersion(versionId,
 			approvedBy: "rekha@test.com",
-			nowUtc: ContentBlockFactory.FixedNotUtc.AddHours(2));
+			nowUtc: ContentBlockFactory.FixedNowUtc.AddHours(2));
 
 		result.IsSuccess.Should().BeTrue();
 		block.Versions.First().VersionStatus.Should().Be(VersionStatus.Approved);
 		block.Versions.First().ApprovedBy.Should().Be("rekha@test.com");
-		block.Versions.First().ApprovedOnUtc.Should().Be(ContentBlockFactory.FixedNotUtc.AddHours(2));
+		block.Versions.First().ApprovedOnUtc.Should().Be(ContentBlockFactory.FixedNowUtc.AddHours(2));
 	}
 
 	[Fact]
@@ -29,9 +29,9 @@ public class ContentBlockApprovalTests
 	{
         var block = ContentBlockFactory.CreateValid();
         var versionId = block.Versions.First().Id;
-        block.SubmitForReview(versionId, ContentBlockFactory.FixedNotUtc.AddHours(1));
+        block.SubmitForReview(versionId, ContentBlockFactory.FixedNowUtc.AddHours(1));
 
-		block.ApproveVersion(versionId, "rekha@test.com", ContentBlockFactory.FixedNotUtc.AddHours(2));
+		block.ApproveVersion(versionId, "rekha@test.com", ContentBlockFactory.FixedNowUtc.AddHours(2));
 
 		var approvedEvent = block.DomainEvents.OfType<VersionApprovedEvent>().Single();
 		approvedEvent.ApprovedVersionId.Should().Be(versionId);
@@ -44,21 +44,21 @@ public class ContentBlockApprovalTests
         // Set a block with version v1 already approved
 		var block = ContentBlockFactory.CreateValid();
 		var v1Id = block.Versions.First().Id;
-		block.SubmitForReview(v1Id, ContentBlockFactory.FixedNotUtc.AddHours(1));
-		block.ApproveVersion(v1Id, "rekha@test.com", ContentBlockFactory.FixedNotUtc.AddHours(2));
+		block.SubmitForReview(v1Id, ContentBlockFactory.FixedNowUtc.AddHours(1));
+		block.ApproveVersion(v1Id, "rekha@test.com", ContentBlockFactory.FixedNowUtc.AddHours(2));
 
 		// Add v2, submit, approve
 		block.AddDraftVersion(ContentBlockFactory.TestBody("Revised!"),
 			"rekha@revised.com",
-			ContentBlockFactory.FixedNotUtc.AddDays(1));
+			ContentBlockFactory.FixedNowUtc.AddDays(1));
 
 		var v2Id = block.Versions.Last().Id;
-		block.SubmitForReview(v2Id, ContentBlockFactory.FixedNotUtc.AddDays(1).AddHours(1));
+		block.SubmitForReview(v2Id, ContentBlockFactory.FixedNowUtc.AddDays(1).AddHours(1));
 
 		block.ClearDomainEvents(); // discard pre-approval events for cleaner assertion
 
 		// Act
-		var result = block.ApproveVersion(v2Id, "rekha@test.com", ContentBlockFactory.FixedNotUtc.AddDays(1).AddHours(2));
+		var result = block.ApproveVersion(v2Id, "rekha@test.com", ContentBlockFactory.FixedNowUtc.AddDays(1).AddHours(2));
 
 		// Assert
 		result.IsSuccess.Should().BeTrue();
@@ -80,7 +80,7 @@ public class ContentBlockApprovalTests
         var block = ContentBlockFactory.CreateValid();
         var versionId = block.Versions.First().Id;
 
-        var result = block.ApproveVersion(versionId, "rekha@test.com", ContentBlockFactory.FixedNotUtc.AddHours(1));
+        var result = block.ApproveVersion(versionId, "rekha@test.com", ContentBlockFactory.FixedNowUtc.AddHours(1));
 
 		result.IsFailure.Should().BeTrue();
 		result.Error.Should().Be(ContentBlockErrors.VersionNotInReview);
@@ -91,10 +91,10 @@ public class ContentBlockApprovalTests
 	{
         var block = ContentBlockFactory.CreateValid();
         var versionId = block.Versions.First().Id;
-        block.SubmitForReview(versionId, ContentBlockFactory.FixedNotUtc.AddHours(1));
+        block.SubmitForReview(versionId, ContentBlockFactory.FixedNowUtc.AddHours(1));
 
 		var result = block.ApproveVersion(
-			versionId, approvedBy: " ", nowUtc: ContentBlockFactory.FixedNotUtc.AddHours(2));
+			versionId, approvedBy: " ", nowUtc: ContentBlockFactory.FixedNowUtc.AddHours(2));
 
 		result.IsFailure.Should().BeTrue();
 		result.Error.Should().Be(ContentBlockErrors.ApproverEmpty);
