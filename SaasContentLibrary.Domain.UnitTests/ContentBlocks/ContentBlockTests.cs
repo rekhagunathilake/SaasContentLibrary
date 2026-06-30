@@ -17,7 +17,7 @@ public class ContentBlockTests
         block.Versions.Should().HaveCount(1);
         block.Versions.First().VersionNumber.Should().Be(1);
         block.Versions.First().VersionStatus.Should().Be(VersionStatus.Draft);
-        block.CreatedAtUtc.Should().Be(ContentBlockFactory.FixedNotUtc);
+        block.CreatedAtUtc.Should().Be(ContentBlockFactory.FixedNowUtc);
         block.ArchivedAtUtc.Should().BeNull();
     }
 
@@ -43,7 +43,7 @@ public class ContentBlockTests
             name: blankName,
             initialBody: ContentBlockFactory.TestBody(),
             authoredBy: "test@test.com",
-            nowUtc: ContentBlockFactory.FixedNotUtc
+            nowUtc: ContentBlockFactory.FixedNowUtc
             );
 
         result.IsFailure.Should().BeTrue();
@@ -62,7 +62,7 @@ public class ContentBlockTests
             name: tooLong,
             initialBody: ContentBlockFactory.TestBody(),
             authoredBy: "test@test.com",
-            nowUtc: ContentBlockFactory.FixedNotUtc);
+            nowUtc: ContentBlockFactory.FixedNowUtc);
 
         result.IsFailure.Should().BeTrue();
         result.Error.Code.Should().Be("ContentBlock.NameTooLong");
@@ -78,7 +78,7 @@ public class ContentBlockTests
             name: "Test name",
             initialBody: ContentBlockFactory.TestBody(),
             authoredBy: "   ",
-            nowUtc: ContentBlockFactory.FixedNotUtc);
+            nowUtc: ContentBlockFactory.FixedNowUtc);
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ContentBlockErrors.AuthorEmpty);
@@ -92,7 +92,7 @@ public class ContentBlockTests
         var result = block.AddDraftVersion(
             ContentBlockFactory.TestBody("Revised Disclaimer Text"),
             authoredBy: "rekha@test.com",
-            nowUtc: ContentBlockFactory.FixedNotUtc.AddDays(1));
+            nowUtc: ContentBlockFactory.FixedNowUtc.AddDays(1));
 
         result.IsSuccess.Should().BeTrue();
         block.Versions.Should().HaveCount(2);
@@ -104,12 +104,12 @@ public class ContentBlockTests
     public void AddDraftVersion_OnArchivedBlock_Fails()
     {
         var block = ContentBlockFactory.CreateValid();
-        block.Archive(ContentBlockFactory.FixedNotUtc.AddHours(1));
+        block.Archive(ContentBlockFactory.FixedNowUtc.AddHours(1));
 
         var result = block.AddDraftVersion(
             ContentBlockFactory.TestBody(),
             authoredBy: "rekha@test.com",
-            nowUtc: ContentBlockFactory.FixedNotUtc.AddHours(2));
+            nowUtc: ContentBlockFactory.FixedNowUtc.AddHours(2));
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ContentBlockErrors.IsArchived);
@@ -121,7 +121,7 @@ public class ContentBlockTests
         var block = ContentBlockFactory.CreateValid();
         var versionId = block.Versions.First().Id;
 
-        var result = block.SubmitForReview(versionId, ContentBlockFactory.FixedNotUtc.AddHours(1));
+        var result = block.SubmitForReview(versionId, ContentBlockFactory.FixedNowUtc.AddHours(1));
 
         result.IsSuccess.Should().BeTrue();
         block.Versions.First().VersionStatus.Should().Be(VersionStatus.InReview);
@@ -133,7 +133,7 @@ public class ContentBlockTests
     {
         var block = ContentBlockFactory.CreateValid();
 
-        var result = block.SubmitForReview(ContentVersionId.NewId(), ContentBlockFactory.FixedNotUtc);
+        var result = block.SubmitForReview(ContentVersionId.NewId(), ContentBlockFactory.FixedNowUtc);
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ContentBlockErrors.VersionNotFound);
@@ -144,9 +144,9 @@ public class ContentBlockTests
     {
         var block = ContentBlockFactory.CreateValid();
         var versionId = block.Versions.First().Id;
-        block.SubmitForReview(versionId, ContentBlockFactory.FixedNotUtc.AddHours(1));
+        block.SubmitForReview(versionId, ContentBlockFactory.FixedNowUtc.AddHours(1));
 
-        var result = block.SubmitForReview(versionId, ContentBlockFactory.FixedNotUtc.AddHours(2));
+        var result = block.SubmitForReview(versionId, ContentBlockFactory.FixedNowUtc.AddHours(2));
 
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ContentBlockErrors.VersionNotDraft);
